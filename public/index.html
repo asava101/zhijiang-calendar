@@ -234,6 +234,53 @@
             .slot-full { height: 70px; font-size: 18px; border: 1px dashed rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); }
             .type-text { padding: 12px 0; font-size: 15px; }
         }
+        /* =========================================
+   ✨ 进阶特效：卡片流光 (SSR卡牌感)
+   ========================================= */
+.event-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%; /* 初始位置在卡片左边外面 */
+    width: 100%;
+    height: 100%;
+    
+    /* 制作一道倾斜的亮光 */
+    background: linear-gradient(
+        90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.3) 50%, 
+        transparent 100%
+    );
+    transform: skewX(-25deg); /* 倾斜角度 */
+    pointer-events: none; /* 鼠标穿透，不影响点击 */
+    z-index: 1; /* 层级：在背景之上，文字之下(文字z-index是2) */
+    transition: none; /* 默认无过渡，防止鼠标移出时倒着回去 */
+}
+
+.event-card:hover::after {
+    left: 150%; /* 鼠标悬停时，光束跑到右边外面 */
+    transition: all 0.6s ease-in-out; /* 0.6秒扫过去 */
+}
+/* =========================================
+   🎈 进阶特效：标题悬浮呼吸
+   ========================================= */
+@keyframes floatText {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); } /* 向上漂浮6像素 */
+}
+
+.title-group h1 {
+    /* 应用浮动动画，时长3.5秒，无限循环 */
+    animation: floatText 3.5s ease-in-out infinite;
+}
+
+/* 给副标题(日期)也加一点，稍微错开时间，更有层次感 */
+.title-group span {
+    display: inline-block; /* 必须转为块级或行内块才能动 */
+    animation: floatText 4s ease-in-out infinite;
+    animation-delay: 0.5s; /* 延迟0.5秒，产生波浪感 */
+}
     </style>
 </head>
 <body>
@@ -330,5 +377,8 @@
         }
         init();
     </script>
+    <div style="text-align: center; margin-top: 40px; opacity: 0.6; font-size: 12px; letter-spacing: 2px;">
+    ✨  Z.J.ENTERTAINMENT ✨
+</div>
 </body>
 </html>
