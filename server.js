@@ -1,10 +1,15 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const fs = require('fs');
-const path = require('path');
-const rateLimit = require('express-rate-limit'); // 📦 新增：防爆破插件
-const { v4: uuidv4 } = require('uuid'); // 📦 新增：生成随机Token
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import fs from 'fs';
+import path from 'path';
+import rateLimit from 'express-rate-limit'; // 📦 防爆破插件
+import { v4 as uuidv4 } from 'uuid'; // 📦 生成随机Token
+import { fileURLToPath } from 'url'; // 🟢 新增：为了生成 __dirname
+
+// 🟢 手动定义 __dirname (ESM 模式下必须这样做)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = 3000;
@@ -86,7 +91,7 @@ app.post('/api/save', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`
-    🔒 安全模式服务器已启动
+    🔒 安全模式服务器已启动 (ES Module)
     --------------------------
     端口: ${PORT}
     防爆破: 已开启 (5次/15分钟)
