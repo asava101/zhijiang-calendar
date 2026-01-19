@@ -1,0 +1,168 @@
+{
+    "title": "05.12 - 01.58",
+    "days": [
+        {
+            "date": "01.12",
+            "day": "星期一",
+            "specialRest": true,
+            "events": []
+        },
+        {
+            "date": "01.13",
+            "day": "星期二",
+            "specialRest": false,
+            "events": [
+                {
+                    "type": "card",
+                    "tag": "日常",
+                    "time": "19:30",
+                    "title": "思诺直播",
+                    "desc": "【歌回】<br>华语金曲连唱4.0",
+                    "color": "bg-purple"
+                },
+                {
+                    "type": "card",
+                    "tag": "日常",
+                    "time": "20:00",
+                    "title": "突击ss",
+                    "desc": "ssss",
+                    "color": "bg-purple",
+                    "is2D": false,
+                    "isProgram": false
+                },
+                {
+                    "type": "card",
+                    "tag": "日常",
+                    "time": "20:00",
+                    "title": "23",
+                    "desc": "323",
+                    "color": "bg-purple",
+                    "is2D": true,
+                    "isProgram": false
+                }
+            ]
+        },
+        {
+            "date": "01.23",
+            "day": "星期三",
+            "specialRest": false,
+            "events": [
+                {
+                    "type": "card",
+                    "is2D": true,
+                    "time": "18:00",
+                    "title": "思诺直播",
+                    "desc": "",
+                    "color": "bg-purple"
+                },
+                {
+                    "type": "card",
+                    "tag": "日常",
+                    "time": "21:00",
+                    "title": "贝拉直播",
+                    "desc": "时间旅行者的<br>贝极星",
+                    "color": "bg-orange"
+                }
+            ]
+        },
+        {
+            "date": "01.15",
+            "day": "星期四",
+            "specialRest": false,
+            "events": [
+                {
+                    "type": "card",
+                    "is2D": true,
+                    "time": "16:00",
+                    "title": "心宣直播",
+                    "desc": "",
+                    "color": "bg-pink"
+                },
+                {
+                    "type": "card",
+                    "tag": "日常",
+                    "time": "19:30",
+                    "title": "乃琳直播",
+                    "desc": "什么叫经典复刻？",
+                    "color": "bg-purple"
+                },
+                {
+                    "type": "card",
+                    "tag": "日常",
+                    "time": "21:00",
+                    "title": "嘉然直播",
+                    "desc": "百变小嘉然",
+                    "color": "bg-pink"
+                }
+            ]
+        },
+        {
+            "date": "01.16",
+            "day": "星期五",
+            "specialRest": false,
+            "events": [
+                {
+                    "type": "card",
+                    "is2D": true,
+                    "time": "16:00",
+                    "title": "心宣直播",
+                    "desc": "",
+                    "color": "bg-pink"
+                },
+                {
+                    "type": "card",
+                    "tag": "节目",
+                    "isProgram": true,
+                    "time": "20:00",
+                    "title": "乃琳 & 贝拉",
+                    "desc": "羞死了",
+                    "color": "bg-orange"
+                }
+            ]
+        },
+        {
+            "date": "01.17",
+            "day": "星期六",
+            "specialRest": false,
+            "events": [
+                {
+                    "type": "text",
+                    "text": "训练时间"
+                },
+                {
+                    "type": "card",
+                    "tag": "节目",
+                    "isProgram": true,
+                    "time": "20:00",
+                    "title": "A-SOUL团综",
+                    "desc": "我来的是时候吗？",
+                    "color": "bg-orange"
+                }
+            ]
+        },
+        {
+            "date": "01.18",
+            "day": "星期日",
+            "specialRest": false,
+            "events": [
+                {
+                    "type": "card",
+                    "is2D": true,
+                    "time": "15:00",
+                    "title": "思诺直播",
+                    "desc": "",
+                    "color": "bg-purple"
+                },
+                {
+                    "type": "card",
+                    "tag": "节目",
+                    "isProgram": true,
+                    "time": "20:00",
+                    "title": "综艺节目",
+                    "desc": "冰箱，<br>终极易如反掌！",
+                    "color": "bg-red"
+                }
+            ]
+        }
+    ]
+}
