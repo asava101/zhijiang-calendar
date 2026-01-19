@@ -15,13 +15,23 @@
             --g-orange: linear-gradient(135deg, #F49D75 0%, #E66A5C 100%);
             --g-blue: linear-gradient(135deg, #5B8BEB 0%, #4669D4 100%);
             --g-red: linear-gradient(135deg, #E65565 0%, #C43645 100%);
+            /* 🟢 新增：后台灰色变量 */
+            --g-gray: linear-gradient(135deg, #A9B8CA 0%, #7A899B 100%);
         }
         body { font-family: var(--font-main); background: url('./bg.png') no-repeat top center; background-size: 100% 100%; background-color: #A5C0F7; min-height: 100vh; color: #4b5563; }
         .glass-panel { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15); }
         .input-glass { background: rgba(255, 255, 255, 0.5); border: 1px solid rgba(255, 255, 255, 0.5); transition: all 0.2s; }
         .input-glass:focus { background: #fff; border-color: #d8b4fe; box-shadow: 0 0 0 3px rgba(216, 180, 254, 0.3); outline: none; }
         ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
-        .color-dot.bg-purple { background: var(--g-purple); } .color-dot.bg-pink { background: var(--g-pink); } .color-dot.bg-orange { background: var(--g-orange); } .color-dot.bg-blue { background: var(--g-blue); } .color-dot.bg-red { background: var(--g-red); }
+        
+        .color-dot.bg-purple { background: var(--g-purple); } 
+        .color-dot.bg-pink { background: var(--g-pink); } 
+        .color-dot.bg-orange { background: var(--g-orange); } 
+        .color-dot.bg-blue { background: var(--g-blue); } 
+        .color-dot.bg-red { background: var(--g-red); }
+        /* 🟢 新增：灰色圆点样式 */
+        .color-dot.bg-gray { background: var(--g-gray); }
+
         .fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; } .fade-enter-from, .fade-leave-to { opacity: 0; }
         .list-enter-active, .list-leave-active { transition: all 0.3s ease; }
         .list-enter-from, .list-leave-to { opacity: 0; transform: translateX(30px); }
@@ -153,7 +163,15 @@
             props: ['index', 'modelValue'],
             emits: ['update:modelValue'],
             setup(props) {
-                const colors = [{ name: '紫', val: 'bg-purple' }, { name: '粉', val: 'bg-pink' }, { name: '橙', val: 'bg-orange' }, { name: '蓝', val: 'bg-blue' }, { name: '红', val: 'bg-red' }];
+                // 🟢 新增：在选项列表里加入灰色
+                const colors = [
+                    { name: '紫', val: 'bg-purple' }, 
+                    { name: '粉', val: 'bg-pink' }, 
+                    { name: '橙', val: 'bg-orange' }, 
+                    { name: '蓝', val: 'bg-blue' }, 
+                    { name: '红', val: 'bg-red' },
+                    { name: '灰', val: 'bg-gray' } 
+                ];
                 watch(() => props.modelValue.tag, (newTag) => { if (props.modelValue.type === 'card') props.modelValue.isProgram = (newTag === '节目'); });
                 return { colors };
             }
@@ -163,7 +181,7 @@
             components: { SlotEditor },
             setup() {
                 const days = ref([]);
-                const weekTitle = ref("01.12 - 01.18"); // 🟢 新增：日期范围状态
+                const weekTitle = ref("01.12 - 01.18");
                 const isLoggedIn = ref(false);
                 const passwordInput = ref('');
                 const loginError = ref('');
@@ -191,19 +209,15 @@
                         const res = await fetch('/api/data');
                         const rawData = await res.json();
                         
-                        // 🟢 核心修改：判断数据格式
                         let dataList = [];
                         if (Array.isArray(rawData)) {
-                            // 旧格式：数组
                             dataList = rawData;
-                            weekTitle.value = "01.12 - 01.18"; // 默认值
+                            weekTitle.value = "01.12 - 01.18";
                         } else {
-                            // 新格式：对象 { title: "...", days: [...] }
                             dataList = rawData.days || [];
                             weekTitle.value = rawData.title || "01.12 - 01.18";
                         }
 
-                        // 转换 logic (兼容无限列表)
                         days.value = dataList.map(day => {
                             if (day.events) return day;
                             const newEvents = [];
@@ -221,12 +235,7 @@
                     isSaving.value = true;
                     const token = localStorage.getItem('admin_token');
                     try {
-                        // 🟢 核心修改：保存时包装成对象 { title, days }
-                        const payload = {
-                            title: weekTitle.value,
-                            days: days.value
-                        };
-
+                        const payload = { title: weekTitle.value, days: days.value };
                         const res = await fetch('/api/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token, data: payload }) });
                         if (res.status === 403 || res.status === 401) { alert("登录已过期"); handleLogout(); return; }
                         const result = await res.json();
