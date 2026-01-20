@@ -59,6 +59,28 @@
             50% { transform: translateY(-8px); filter: drop-shadow(0 15px 25px rgba(139, 92, 246, 0.4)); opacity: 1; }
         }
 
+        /* ✨ 新增：日历翻页特效 (Flip Down) */
+        @keyframes flipDown {
+            0% { 
+                opacity: 0; 
+                transform: rotateX(-90deg); /* 初始状态：向上折叠90度 */
+            }
+            40% {
+                opacity: 1;
+                transform: rotateX(20deg); /* 翻过头一点，产生惯性 */
+            }
+            60% {
+                transform: rotateX(-10deg); /* 回弹 */
+            }
+            80% {
+                transform: rotateX(5deg); /* 微调 */
+            }
+            100% { 
+                opacity: 1; 
+                transform: rotateX(0deg); /* 最终平铺 */
+            }
+        }
+
         /* 背景大字 */
         .bg-deco { 
             position: absolute; top: 25px; left: 0; width: 100%; text-align: center; z-index: 0; pointer-events: none; overflow: hidden; 
@@ -87,15 +109,42 @@
         .title-group span { font-size: 36px; font-weight: 900; font-style: italic; opacity: 0.95; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
         /* Grid 布局 */
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--gap-size); position: relative; align-items: stretch; }
+        /* ✨ 增加 perspective 属性，开启3D空间，让翻页看起来有立体感 */
+        .calendar-grid { 
+            display: grid; 
+            grid-template-columns: repeat(7, 1fr); 
+            gap: var(--gap-size); 
+            position: relative; 
+            align-items: stretch;
+            perspective: 1000px; 
+        }
         .day-column { display: flex; flex-direction: column; gap: var(--gap-size); height: 100%; }
 
         /* 日期头 */
         .date-box { 
-            height: var(--h-header); background: repeating-linear-gradient(45deg, var(--stripe-odd-2), var(--stripe-odd-2) 10px, var(--stripe-odd-1) 10px, var(--stripe-odd-1) 20px); 
-            border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; box-shadow: 0 6px 12px rgba(0,0,0,0.2); 
-            border-left: 4px solid #EE5C96; transform: translateY(-5px); z-index: 2; flex-shrink: 0; 
+            height: var(--h-header); 
+            background: repeating-linear-gradient(45deg, var(--stripe-odd-2), var(--stripe-odd-2) 10px, var(--stripe-odd-1) 10px, var(--stripe-odd-1) 20px); 
+            border-radius: 8px; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            position: relative; 
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2); 
+            border-left: 4px solid #EE5C96; 
+            flex-shrink: 0; 
+            
+            /* ✨ 核心修改：应用翻页动画 */
+            transform-origin: top center; /* 以顶部边缘为轴旋转 */
+            animation: flipDown 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards; /* elastic easing */
         }
+
+        /* ✨ 依次设置动画延迟，形成阶梯翻页效果 */
+        .day-column:nth-child(1) .date-box { animation-delay: 0s; }
+        .day-column:nth-child(2) .date-box { animation-delay: 0.1s; }
+        .day-column:nth-child(3) .date-box { animation-delay: 0.2s; }
+        .day-column:nth-child(4) .date-box { animation-delay: 0.3s; }
+        .day-column:nth-child(5) .date-box { animation-delay: 0.4s; }
+        .day-column:nth-child(6) .date-box { animation-delay: 0.5s; }
+        .day-column:nth-child(7) .date-box { animation-delay: 0.6s; }
+
         .day-column:nth-child(even) .date-box { background: repeating-linear-gradient(45deg, var(--stripe-even-2), var(--stripe-even-2) 10px, var(--stripe-even-1) 10px, var(--stripe-even-1) 20px); border-left: 4px solid #9244C8; }
         .date-box::before, .date-box::after { content:''; position:absolute; top:-8px; width:4px; height:16px; background:#F9D423; border-radius:2px; box-shadow:1px 1px 3px rgba(0,0,0,0.3); }
         .date-box::before { left: 12px; } .date-box::after { right: 12px; }
@@ -114,19 +163,10 @@
         }
         @keyframes breathe { 0%, 100% { opacity: 1; transform: scale(1); border-color: rgba(255, 255, 255, 0.6); } 50% { opacity: 0.9; transform: scale(0.98); border-color: rgba(255, 255, 255, 0.3); } }
         
-        /* ✨ 核心修改：恢复 CSS 渐变版 zZz */
         .rest-icon {
             font-family: "Comic Sans MS", cursive, sans-serif;
-            font-size: 40px;
-            font-weight: 900;
-            line-height: 1;
-            margin-top: 10px;
-            
-            /* 渐变蓝 */
-            background: linear-gradient(180deg, #89f7fe 0%, #66a6ff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            
+            font-size: 40px; font-weight: 900; line-height: 1; margin-top: 10px;
+            background: linear-gradient(180deg, #89f7fe 0%, #66a6ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
             animation: sleepFloat 2.5s infinite ease-in-out;
         }
@@ -138,6 +178,7 @@
         .event-card { 
             position: relative; z-index: 1; overflow: visible !important; 
             background: none;
+            /* 稍微增加延迟，等日期翻下来之后卡片再弹出来，更有节奏感 */
             animation: popIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
@@ -261,11 +302,8 @@
             .card-tag { left: -2px; top: -2px; clip-path: none; border-radius: 0 4px 4px 0; box-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
             .tag-2d { top: -6px; right: -6px; width: 24px; height: 24px; } .tag-2d span { font-size: 9px; }
             .tag-raid { width: 36px; height: 36px; bottom: 0; left: 0; } .tag-raid span { font-size: 9px; margin-left: 4px; margin-bottom: 6px; }
-            
-            /* ✨ 手机端休息日 zZz 样式 */
             .slot-full { height: 70px !important; min-height: 70px !important; flex: none !important; font-size: 18px; border: 1px dashed rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); flex-direction: row; gap: 10px; }
             .rest-icon { margin-top: 0; font-size: 24px; }
-            
             .type-text { padding: 12px 0; font-size: 15px; }
         }
         
@@ -322,7 +360,7 @@
              const descHtml = item.desc ? `<div class="card-desc">${item.desc}</div>` : '';
              const validColors = ['bg-purple', 'bg-pink', 'bg-orange', 'bg-blue', 'bg-red', 'bg-gray'];
              const colorClass = validColors.includes(item.color) ? item.color : 'bg-purple';
-             const delayStyle = `animation-delay: ${index * 0.05}s`;
+             const delayStyle = `animation-delay: ${index * 0.05 + 0.5}s`; /* 增加0.5s基础延迟，让日期头先翻下来 */
              const avatarHtml = item.avatar ? `<img src="./${item.avatar}" class="avatar-img" alt="avatar">` : '';
 
             return `
