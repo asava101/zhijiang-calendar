@@ -38,7 +38,7 @@
         /* 头像选择器样式 */
         .avatar-btn {
             width: 36px; height: 36px;
-            border-radius: 8px; /* 方形圆角更像按钮 */
+            border-radius: 8px;
             border: 2px solid transparent;
             overflow: hidden;
             cursor: pointer;
@@ -57,6 +57,16 @@
             background: white;
         }
         .avatar-btn img { width: 100%; height: 100%; object-fit: contain; }
+        
+        /* ✨ 标题下拉菜单样式 */
+        .title-dropdown {
+            animation: slideDown 0.2s ease-out;
+            scrollbar-width: thin;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body class="overflow-x-hidden">
@@ -165,7 +175,27 @@
                     <select v-model="modelValue.tag" class="w-1/3 text-xs border-none rounded-lg px-1 bg-white/60 font-bold text-gray-600 shadow-sm"><option value="">无</option><option value="日常">🏷️ 日常</option><option value="节目">🎉 节目</option></select>
                     <input v-model="modelValue.time" placeholder="时间" class="w-2/3 text-xs font-mono font-bold text-center border-none rounded-lg bg-gray-800/5 text-gray-700 shadow-inner focus:bg-white">
                 </div>
-                <input v-model="modelValue.title" placeholder="标题" class="w-full text-sm font-black text-gray-800 input-glass rounded-lg px-2 py-1.5">
+                
+                <div class="relative">
+                    <input 
+                        v-model="modelValue.title" 
+                        placeholder="标题" 
+                        class="w-full text-sm font-black text-gray-800 input-glass rounded-lg px-2 py-1.5"
+                        @focus="showTitleDropdown = true"
+                        @blur="hideDropdown"
+                    >
+                    <div v-if="showTitleDropdown" class="title-dropdown absolute left-0 right-0 top-full mt-1 bg-white/95 backdrop-blur-md border border-white/50 rounded-xl shadow-xl z-50 overflow-hidden max-h-40 overflow-y-auto">
+                        <div 
+                            v-for="opt in titleOptions" 
+                            :key="opt"
+                            @mousedown.prevent="selectTitle(opt)" 
+                            class="px-3 py-2 text-xs font-bold text-gray-600 hover:bg-purple-100 hover:text-purple-600 cursor-pointer transition-colors border-b border-gray-50 last:border-none"
+                        >
+                            {{ opt }}
+                        </div>
+                    </div>
+                </div>
+
                 <textarea v-model="modelValue.desc" placeholder="简介" class="w-full text-xs font-medium text-gray-600 input-glass rounded-lg px-2 py-1.5 h-16 resize-none leading-relaxed"></textarea>
                 
                 <div class="pt-2 border-t border-gray-200/50 mt-1 space-y-2">
@@ -212,7 +242,6 @@
                     { name: '蓝', val: 'bg-blue' }, { name: '红', val: 'bg-red' }, { name: '灰', val: 'bg-gray' } 
                 ];
                 
-                // ✨ 更新后的头像列表
                 const avatarList = [
                     { name: '嘉然', file: 'ran.png' },
                     { name: '乃琳', file: 'lin.png' },
@@ -221,12 +250,25 @@
                     { name: '心宜', file: 'yi.png' }
                 ];
 
+                // 🟢 预设标题列表
+                const titleOptions = ['嘉然直播', '乃琳直播', '贝拉直播', '思诺直播', '心宜直播'];
+                const showTitleDropdown = ref(false);
+
+                const selectTitle = (title) => {
+                    props.modelValue.title = title;
+                    showTitleDropdown.value = false;
+                };
+
+                const hideDropdown = () => {
+                    setTimeout(() => { showTitleDropdown.value = false; }, 200);
+                };
+
                 const toggleAvatar = (file) => {
                     props.modelValue.avatar = props.modelValue.avatar === file ? '' : file;
                 };
 
                 watch(() => props.modelValue.tag, (newTag) => { if (props.modelValue.type === 'card') props.modelValue.isProgram = (newTag === '节目'); });
-                return { colors, avatarList, toggleAvatar };
+                return { colors, avatarList, toggleAvatar, titleOptions, showTitleDropdown, selectTitle, hideDropdown };
             }
         };
 
