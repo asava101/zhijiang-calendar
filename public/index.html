@@ -50,6 +50,13 @@
             position: relative; 
             overflow-x: hidden;
         }
+        
+        /* 磨砂质感纹理 */
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 9999; opacity: 0.4; mix-blend-mode: overlay;
+        }
 
         /* 动画定义 */
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -57,6 +64,18 @@
         @keyframes floatBreathing {
             0%, 100% { transform: translateY(0); filter: drop-shadow(0 5px 15px rgba(139, 92, 246, 0.2)); opacity: 0.85; }
             50% { transform: translateY(-8px); filter: drop-shadow(0 15px 25px rgba(139, 92, 246, 0.4)); opacity: 1; }
+        }
+        
+        /* 骨架屏专用动画 */
+        @keyframes skeleton-pulse { 
+            0% { background-color: rgba(255, 255, 255, 0.1); } 
+            50% { background-color: rgba(255, 255, 255, 0.25); } 
+            100% { background-color: rgba(255, 255, 255, 0.1); } 
+        }
+        .skeleton-card {
+            width: 100%; height: 110px; border-radius: 12px;
+            animation: skeleton-pulse 1.5s infinite ease-in-out;
+            margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.1);
         }
 
         /* 背景大字 */
@@ -69,7 +88,7 @@
             animation: floatBreathing 6s ease-in-out infinite;
         }
 
-        .container { width: 1200px; margin: 0 auto; padding: 160px 20px 40px 20px; position: relative; z-index: 1; animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .container { width: 1200px; margin: 0 auto; padding: 160px 20px 40px 20px; position: relative; z-index: 1; }
 
         .mask-layer { 
             position: absolute; top: 235px; left: 0; right: 0; bottom: 0; 
@@ -79,7 +98,11 @@
             border-radius: 24px 24px 0 0; box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
         }
 
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 0 10px; }
+        header { 
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 0 10px; 
+            animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        
         .logo-wrapper { position: relative; }
         .logo { background: #7F5BE6; padding: 8px 30px; transform: skewX(-15deg) rotate(-2deg); font-weight: bold; font-size: 18px; box-shadow: 4px 4px 0 rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.4); white-space: nowrap; letter-spacing: 1px;}
         .title-group { text-align: right; }
@@ -95,12 +118,40 @@
             height: var(--h-header); background: repeating-linear-gradient(45deg, var(--stripe-odd-2), var(--stripe-odd-2) 10px, var(--stripe-odd-1) 10px, var(--stripe-odd-1) 20px); 
             border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; box-shadow: 0 6px 12px rgba(0,0,0,0.2); 
             border-left: 4px solid #EE5C96; transform: translateY(-5px); z-index: 2; flex-shrink: 0; 
+            transition: all 0.3s ease;
         }
         .day-column:nth-child(even) .date-box { background: repeating-linear-gradient(45deg, var(--stripe-even-2), var(--stripe-even-2) 10px, var(--stripe-even-1) 10px, var(--stripe-even-1) 20px); border-left: 4px solid #9244C8; }
         .date-box::before, .date-box::after { content:''; position:absolute; top:-8px; width:4px; height:16px; background:#F9D423; border-radius:2px; box-shadow:1px 1px 3px rgba(0,0,0,0.3); }
         .date-box::before { left: 12px; } .date-box::after { right: 12px; }
         .date-num { font-size: 30px; font-weight: 900; line-height: 1; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
         .date-day { font-size: 14px; opacity: 0.95; font-weight: bold; letter-spacing: 1px; }
+        
+        /* 今天的高亮样式 */
+        .day-column.today .date-box {
+            background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.3) 100%) !important;
+            backdrop-filter: blur(8px);
+            border: 2px solid #fff; border-left-width: 4px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), inset 0 0 10px rgba(255,255,255,0.3);
+            transform: translateY(-10px) scale(1.05); z-index: 10;
+            position: relative;
+        }
+        /* ✨ [调整] 加大色块，竖排布局 */
+        .day-column.today .date-box::after {
+            content: '今\A日'; 
+            white-space: pre; 
+            position: absolute;
+            top: 0; right: 0; 
+            background: linear-gradient(135deg, #F49D75 0%, #E66A5C 100%);
+            color: white;
+            font-size: 10px; font-weight: 900;
+            padding: 6px 5px; /* 加大内边距 */
+            border-radius: 0 8px 0 8px; 
+            box-shadow: none; 
+            z-index: 20;
+            line-height: 1.1;
+            text-align: center;
+        }
+        .day-column.today { background: linear-gradient(to bottom, rgba(255,255,255,0.1) 0%, transparent 100%); border-radius: 12px; }
 
         .slot { position: relative; border-radius: 12px; width: 100%; box-sizing: border-box; }
         .h-text { height: 130px; } .h-card { height: 130px; }
@@ -166,7 +217,7 @@
         .tag-raid { position: absolute; bottom: 0; left: 0; width: 42px; height: 42px; background: linear-gradient(135deg, #FFD000 0%, #FF6000 100%) !important; clip-path: polygon(0 0, 100% 100%, 0 100%); border-radius: 0 0 0 12px; box-shadow: 2px -2px 5px rgba(0,0,0,0.2); z-index: 20; display: flex; align-items: flex-end; justify-content: flex-start; }
         .tag-raid span { transform: rotate(45deg); font-size: 10px; font-weight: 900; line-height: 1; color: #C21807; letter-spacing: -1px; margin-left: 5px; margin-bottom: 8px; }
 
-        .card-title { font-size: 16px; font-weight: 900; margin: 4px 0 2px 0; line-height: 1.25; width: 100%; position: relative; z-index: 2; text-shadow: 0 1px 3px rgba(0,0,0,0.25); text-align: center; }
+        .card-title { font-size: 16px; font-weight: 900; margin: 4px 0 2px 0; line-height: 1.25; width: 100%; position: relative; z-index: 2; text-shadow: 0 1px 3px rgba(0,0,0,0.25); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; display: block; }
         .card-desc { font-size: 12px; opacity: 0.9; line-height: 1.3; margin-bottom: 5px; font-weight: 500; position: relative; z-index: 2; text-shadow: 0 1px 1px rgba(0,0,0,0.1); text-align: center; }
 
         /* 底部容器 */
@@ -211,7 +262,7 @@
         @media screen and (max-width: 580px) {
             header { flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 20px; }
             .title-group { text-align: left; } .title-group h1 { font-size: 28px; } .title-group span { font-size: 24px; }
-            .bg-deco { font-size: 11.5vw; top: 90px; }
+            .bg-deco { font-size: 11.5vw; top: 90px; letter-spacing: -2px; }
             .container { width: 92%; padding: 130px 0 40px 0; }
             .mask-layer { top: 180px; }
             
@@ -278,6 +329,16 @@
     
     <script>
         async function init() {
+            // 加载骨架屏：只有卡片闪烁，头部静止
+            const root = document.getElementById('calendar-root');
+            root.innerHTML = Array(7).fill(0).map(() => `
+                <div class="day-column">
+                    <div class="date-box" style="background:rgba(255,255,255,0.1); border:none; box-shadow:none;"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card" style="opacity:0.5"></div>
+                </div>
+            `).join('');
+
             try {
                 const res = await fetch('/api/data');
                 const rawData = await res.json();
@@ -356,6 +417,15 @@
                 `;
             });
             root.innerHTML = html;
+            
+            // --- ✨ 自动高亮今天 ---
+            const dayColumns = document.querySelectorAll('.day-column');
+            let todayIndex = new Date().getDay(); 
+            // 修正索引：周一(1)->0, 周二(2)->1 ... 周日(0)->6
+            let targetIndex = (todayIndex + 6) % 7;
+            if (dayColumns[targetIndex]) {
+                dayColumns[targetIndex].classList.add('today');
+            }
         }
         init();
     </script>
