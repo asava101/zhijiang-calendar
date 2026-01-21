@@ -55,34 +55,12 @@
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.9) translateY(20px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
         @keyframes floatBreathing {
-            0%， 100% { transform: translateY(0); filter: drop-shadow(0 5px 15px rgba(139, 92, 246, 0.2)); opacity: 0.85; }
+            0%, 100% { transform: translateY(0); filter: drop-shadow(0 5px 15px rgba(139, 92, 246, 0.2)); opacity: 0.85; }
             50% { transform: translateY(-8px); filter: drop-shadow(0 15px 25px rgba(139, 92, 246, 0.4)); opacity: 1; }
         }
 
-        /* ✨ 新增：日历翻页特效 (Flip Down) */
-        @keyframes flipDown {
-            0% { 
-                opacity: 0; 
-                transform: rotateX(-90deg); /* 初始状态：向上折叠90度 */
-            }
-            40% {
-                opacity: 1;
-                transform: rotateX(20deg); /* 翻过头一点，产生惯性 */
-            }
-            60% {
-                transform: rotateX(-10deg); /* 回弹 */
-            }
-            80% {
-                transform: rotateX(5deg); /* 微调 */
-            }
-            100% { 
-                opacity: 1; 
-                transform: rotateX(0deg); /* 最终平铺 */
-            }
-        }
-
         /* 背景大字 */
-        。bg-deco { 
+        .bg-deco { 
             position: absolute; top: 25px; left: 0; width: 100%; text-align: center; z-index: 0; pointer-events: none; overflow: hidden; 
             font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
             font-size: 240px; font-weight: 900; line-height: 1; font-style: italic; letter-spacing: -10px;
@@ -106,45 +84,18 @@
         .logo { background: #7F5BE6; padding: 8px 30px; transform: skewX(-15deg) rotate(-2deg); font-weight: bold; font-size: 18px; box-shadow: 4px 4px 0 rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.4); white-space: nowrap; letter-spacing: 1px;}
         .title-group { text-align: right; }
         .title-group h1 { margin: 0; font-family: "ZCOOL XiaoWei", "SimSun", serif; font-size: 42px; letter-spacing: 2px; background: linear-gradient(180deg, #FFFDE0 10%, #FFABCD 90%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 2px 8px rgba(122, 85, 206, 0.6)); }
-        。title-group span { font-size: 36px; font-weight: 900; font-style: italic; opacity: 0.95; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .title-group span { font-size: 36px; font-weight: 900; font-style: italic; opacity: 0.95; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
         /* Grid 布局 */
-        /* ✨ 增加 perspective 属性，开启3D空间，让翻页看起来有立体感 */
-        .calendar-grid { 
-            display: grid; 
-            grid-template-columns: repeat(7, 1fr); 
-            gap: var(--gap-size); 
-            position: relative; 
-            align-items: stretch;
-            perspective: 1000px; 
-        }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--gap-size); position: relative; align-items: stretch; }
         .day-column { display: flex; flex-direction: column; gap: var(--gap-size); height: 100%; }
 
         /* 日期头 */
         .date-box { 
-            height: var(--h-header); 
-            background: repeating-linear-gradient(45deg, var(--stripe-odd-2), var(--stripe-odd-2) 10px, var(--stripe-odd-1) 10px, var(--stripe-odd-1) 20px); 
-            border-radius: 8px; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            position: relative; 
-            box-shadow: 0 6px 12px rgba(0,0,0,0.2); 
-            border-left: 4px solid #EE5C96; 
-            flex-shrink: 0; 
-            
-            /* ✨ 核心修改：应用翻页动画 */
-            transform-origin: top center; /* 以顶部边缘为轴旋转 */
-            animation: flipDown 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards; /* elastic easing */
+            height: var(--h-header); background: repeating-linear-gradient(45deg, var(--stripe-odd-2), var(--stripe-odd-2) 10px, var(--stripe-odd-1) 10px, var(--stripe-odd-1) 20px); 
+            border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; box-shadow: 0 6px 12px rgba(0,0,0,0.2); 
+            border-left: 4px solid #EE5C96; transform: translateY(-5px); z-index: 2; flex-shrink: 0; 
         }
-
-        /* ✨ 依次设置动画延迟，形成阶梯翻页效果 */
-        .day-column:nth-child(1) .date-box { animation-delay: 0s; }
-        .day-column:nth-child(2) .date-box { animation-delay: 0.1s; }
-        .day-column:nth-child(3) .date-box { animation-delay: 0.2s; }
-        .day-column:nth-child(4) .date-box { animation-delay: 0.3s; }
-        .day-column:nth-child(5) .date-box { animation-delay: 0.4s; }
-        .day-column:nth-child(6) .date-box { animation-delay: 0.5s; }
-        .day-column:nth-child(7) .date-box { animation-delay: 0.6s; }
-
         .day-column:nth-child(even) .date-box { background: repeating-linear-gradient(45deg, var(--stripe-even-2), var(--stripe-even-2) 10px, var(--stripe-even-1) 10px, var(--stripe-even-1) 20px); border-left: 4px solid #9244C8; }
         .date-box::before, .date-box::after { content:''; position:absolute; top:-8px; width:4px; height:16px; background:#F9D423; border-radius:2px; box-shadow:1px 1px 3px rgba(0,0,0,0.3); }
         .date-box::before { left: 12px; } .date-box::after { right: 12px; }
@@ -163,7 +114,7 @@
         }
         @keyframes breathe { 0%, 100% { opacity: 1; transform: scale(1); border-color: rgba(255, 255, 255, 0.6); } 50% { opacity: 0.9; transform: scale(0.98); border-color: rgba(255, 255, 255, 0.3); } }
         
-        。rest-icon {
+        .rest-icon {
             font-family: "Comic Sans MS", cursive, sans-serif;
             font-size: 40px; font-weight: 900; line-height: 1; margin-top: 10px;
             background: linear-gradient(180deg, #89f7fe 0%, #66a6ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
@@ -178,7 +129,6 @@
         .event-card { 
             position: relative; z-index: 1; overflow: visible !important; 
             background: none;
-            /* 稍微增加延迟，等日期翻下来之后卡片再弹出来，更有节奏感 */
             animation: popIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
@@ -194,13 +144,13 @@
         }
         .event-card:hover .card-inner { border-color: rgba(255, 255, 255, 0.7); box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.3), 0 15px 30px rgba(0, 0, 0, 0.25); }
 
-        /* 颜色映射 */
-        .bg-purple .card-inner { background: var(--card-purple); } 
-        .bg-pink .card-inner { background: var(--card-pink); } 
-        .bg-orange .card-inner { background: var(--card-orange); } 
-        .bg-blue .card-inner { background: var(--card-blue); } 
-        .bg-red .card-inner { background: var(--card-red); } 
-        .bg-gray .card-inner { background: var(--card-gray); }
+        /* ✨ 强制颜色映射 (使用 !important 防止覆盖) */
+        .bg-purple .card-inner { background: var(--card-purple) !important; } 
+        .bg-pink .card-inner { background: var(--card-pink) !important; } 
+        .bg-orange .card-inner { background: var(--card-orange) !important; } 
+        .bg-blue .card-inner { background: var(--card-blue) !important; } 
+        .bg-red .card-inner { background: var(--card-red) !important; } 
+        .bg-gray .card-inner { background: var(--card-gray) !important; }
 
         /* 纹理 & 光效 */
         .card-inner::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(rgba(255, 255, 255, 0.18) 1.5px, transparent 1.5px); background-size: 14px 14px; background-position: center; z-index: 0; pointer-events: none; }
@@ -210,9 +160,12 @@
         /* 标签 */
         .card-tag { position: absolute; top: -2px; left: 8px; background: var(--tag-yellow); color: #333; font-size: 11px; font-weight: 900; padding: 3px 6px 4px 6px; clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%); z-index: 5; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         .card-tag.program { background: var(--tag-red); color: white; }
-        。tag-2d { position: absolute; top: -8px; right: -8px; width: 30px; height: 30px; background: #9370F5; transform: rotate(45deg); border: 2px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.25); z-index: 20; transition: background 0.3s; display: flex; align-items: center; justify-content: center; }
+        .tag-2d { position: absolute; top: -8px; right: -8px; width: 30px; height: 30px; background: #9370F5; transform: rotate(45deg); border: 2px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.25); z-index: 20; transition: background 0.3s; display: flex; align-items: center; justify-content: center; }
         .tag-2d span { transform: rotate(-45deg); font-size: 11px; font-weight: 900; line-height: 1; }
+        
+        /* 2D图标变色 */
         .bg-pink .tag-2d { background: #FF7EB3; } .bg-orange .tag-2d { background: #FFAB85; } .bg-blue .tag-2d { background: #739AF0; } .bg-red .tag-2d { background: #FF6B7A; } .bg-purple .tag-2d { background: #9370F5; } .bg-gray .tag-2d { background: #A9B8CA; }
+        
         .tag-raid { position: absolute; bottom: 0; left: 0; width: 42px; height: 42px; background: linear-gradient(135deg, #FFD000 0%, #FF6000 100%) !important; clip-path: polygon(0 0, 100% 100%, 0 100%); border-radius: 0 0 0 12px; box-shadow: 2px -2px 5px rgba(0,0,0,0.2); z-index: 20; display: flex; align-items: flex-end; justify-content: flex-start; }
         .tag-raid span { transform: rotate(45deg); font-size: 10px; font-weight: 900; line-height: 1; color: #C21807; letter-spacing: -1px; margin-left: 5px; margin-bottom: 8px; }
 
@@ -251,7 +204,7 @@
             .container { width: 94%; padding: 130px 20px 40px 20px; }
             .mask-layer { top: 180px; }
             .calendar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; align-items: start; }
-            。event-card { min-height: 110px; flex-direction: column; }
+            .event-card { min-height: 110px; flex-direction: column; }
             .card-inner { flex-direction: column; padding: 10px; }
             .card-tag { left: 8px; top: -2px; clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%); }
             .slot-full { height: 130px; font-size: 20px; }
@@ -303,7 +256,7 @@
             .tag-2d { top: -6px; right: -6px; width: 24px; height: 24px; } .tag-2d span { font-size: 9px; }
             .tag-raid { width: 36px; height: 36px; bottom: 0; left: 0; } .tag-raid span { font-size: 9px; margin-left: 4px; margin-bottom: 6px; }
             .slot-full { height: 70px !important; min-height: 70px !important; flex: none !important; font-size: 18px; border: 1px dashed rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); flex-direction: row; gap: 10px; }
-            。rest-icon { margin-top: 0; font-size: 24px; }
+            .rest-icon { margin-top: 0; font-size: 24px; }
             .type-text { padding: 12px 0; font-size: 15px; }
         }
         
@@ -360,7 +313,7 @@
              const descHtml = item.desc ? `<div class="card-desc">${item.desc}</div>` : '';
              const validColors = ['bg-purple', 'bg-pink', 'bg-orange', 'bg-blue', 'bg-red', 'bg-gray'];
              const colorClass = validColors.includes(item.color) ? item.color : 'bg-purple';
-             const delayStyle = `animation-delay: ${index * 0.05 + 0.5}s`; /* 增加0.5s基础延迟，让日期头先翻下来 */
+             const delayStyle = `animation-delay: ${index * 0.05}s`;
              const avatarHtml = item.avatar ? `<img src="./${item.avatar}" class="avatar-img" alt="avatar">` : '';
 
             return `
@@ -398,7 +351,7 @@
                 html += `
                     <div class="day-column">
                         <div class="date-box">
-                            <span class="date-num">${day。date}</span>
+                            <span class="date-num">${day.date}</span>
                             <span class="date-day">${day.day}</span>
                         </div>
                         ${contentHtml}
@@ -409,7 +362,6 @@
         }
         init();
     </script>
-    <div style="text-align: center; margin-top: 40px; opacity: 0.6; font-size: 12px; letter-spacing: 2px;">✨  Z.J.ENTERTAINMENT ✨<br/>像素头像来源:@蜂蜜酒Mead</div>
+    <div style="text-align: center; margin-top: 40px; opacity: 0.6; font-size: 12px; letter-spacing: 2px;">✨  Z.J.ENTERTAINMENT ✨</div>
 </body>
-
 </html>
