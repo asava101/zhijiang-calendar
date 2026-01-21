@@ -15,23 +15,21 @@
             --g-purple: linear-gradient(135deg, #8A65F1 0%, #6846D4 100%);
             --g-pink: linear-gradient(135deg, #FF7EB3 0%, #E63E75 100%);
             --g-orange: linear-gradient(135deg, #F49D75 0%, #E66A5C 100%);
-            --g-blue: linear-gradient(135deg, #5B8BEB 0%, #4669D4 100%);
+            /* 移除蓝色 */
             --g-red: linear-gradient(135deg, #E65565 0%, #C43645 100%);
             --g-gray: linear-gradient(135deg, #A9B8CA 0%, #7A899B 100%);
         }
         body { font-family: var(--font-main); background: url('./bg.png') no-repeat top center; background-size: 100% 100%; background-color: #A5C0F7; min-height: 100vh; color: #4b5563; }
         .glass-panel { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15); }
         
-        /* 输入框样式优化：在深色背景上也能看清 */
         .input-glass { background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(255, 255, 255, 0.8); transition: all 0.2s; color: #333; }
         .input-glass:focus { background: #fff; border-color: #d8b4fe; box-shadow: 0 0 0 3px rgba(216, 180, 254, 0.3); outline: none; }
         ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
         
-        /* 颜色类 - 后台预览用 */
+        /* 颜色类 */
         .bg-purple { background: var(--g-purple) !important; color: white; } 
         .bg-pink { background: var(--g-pink) !important; color: white; } 
         .bg-orange { background: var(--g-orange) !important; color: white; } 
-        .bg-blue { background: var(--g-blue) !important; color: white; } 
         .bg-red { background: var(--g-red) !important; color: white; }
         .bg-gray { background: var(--g-gray) !important; color: white; }
         
@@ -41,7 +39,6 @@
         .color-dot.bg-purple { background: var(--g-purple); } 
         .color-dot.bg-pink { background: var(--g-pink); } 
         .color-dot.bg-orange { background: var(--g-orange); } 
-        .color-dot.bg-blue { background: var(--g-blue); } 
         .color-dot.bg-red { background: var(--g-red); }
         .color-dot.bg-gray { background: var(--g-gray); }
 
@@ -49,37 +46,13 @@
         .list-enter-active, .list-leave-active { transition: all 0.3s ease; }
         .list-enter-from, .list-leave-to { opacity: 0; transform: translateX(30px); }
 
-        /* 头像选择器 */
-        .avatar-btn {
-            width: 36px; height: 36px;
-            border-radius: 8px;
-            border: 2px solid transparent;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.2s;
-            opacity: 0.8;
-            filter: grayscale(0.2);
-            background: rgba(255,255,255,0.8);
-        }
+        .avatar-btn { width: 36px; height: 36px; border-radius: 8px; border: 2px solid transparent; overflow: hidden; cursor: pointer; transition: all 0.2s; opacity: 0.8; filter: grayscale(0.2); background: rgba(255,255,255,0.8); }
         .avatar-btn:hover { transform: translateY(-2px); opacity: 1; filter: grayscale(0); }
-        .avatar-btn.active { 
-            border-color: #7F5BE6; 
-            opacity: 1; 
-            filter: grayscale(0);
-            box-shadow: 0 4px 10px rgba(127, 91, 230, 0.3);
-            transform: scale(1.1);
-            background: white;
-        }
+        .avatar-btn.active { border-color: #7F5BE6; opacity: 1; filter: grayscale(0); box-shadow: 0 4px 10px rgba(127, 91, 230, 0.3); transform: scale(1.1); background: white; }
         .avatar-btn img { width: 100%; height: 100%; object-fit: contain; }
         
-        .title-dropdown {
-            animation: slideDown 0.2s ease-out;
-            scrollbar-width: thin;
-        }
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .title-dropdown { animation: slideDown 0.2s ease-out; scrollbar-width: thin; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="overflow-x-hidden">
@@ -198,14 +171,7 @@
                         @blur="hideDropdown"
                     >
                     <div v-if="showTitleDropdown" class="title-dropdown absolute left-0 right-0 top-full mt-1 bg-white/95 backdrop-blur-md border border-white/50 rounded-xl shadow-xl z-50 overflow-hidden max-h-40 overflow-y-auto">
-                        <div 
-                            v-for="opt in titleOptions" 
-                            :key="opt"
-                            @mousedown.prevent="selectTitle(opt)" 
-                            class="px-3 py-2 text-xs font-bold text-gray-600 hover:bg-purple-100 hover:text-purple-600 cursor-pointer transition-colors border-b border-gray-50 last:border-none"
-                        >
-                            {{ opt }}
-                        </div>
+                        <div v-for="opt in titleOptions" :key="opt" @mousedown.prevent="selectTitle(opt)" class="px-3 py-2 text-xs font-bold text-gray-600 hover:bg-purple-100 hover:text-purple-600 cursor-pointer transition-colors border-b border-gray-50 last:border-none">{{ opt }}</div>
                     </div>
                 </div>
 
@@ -214,7 +180,7 @@
                 <div class="pt-2 border-t border-white/20 mt-1 space-y-2">
                     <div class="flex justify-between items-center">
                         <div class="flex gap-1.5 bg-black/10 p-1 rounded-full backdrop-blur-sm">
-                            <div v-for="c in colors" :key="c.val" @click="modelValue.color = c.val" class="color-dot" :class="[c.val, modelValue.color === c.val ? 'scale-125 ring-2 ring-white' : '']"></div>
+                            <div v-for="c in colors" :key="c.val" @click="selectColor(c.val)" class="color-dot" :class="[c.val, modelValue.color === c.val ? 'scale-125 ring-2 ring-white' : '']"></div>
                         </div>
                         <div class="flex gap-2">
                              <label class="flex items-center gap-1 cursor-pointer select-none bg-white/80 px-2 py-1 rounded-lg hover:bg-white transition shadow-sm"><input type="checkbox" v-model="modelValue.isRaid" class="accent-red-500 w-3.5 h-3.5"><span class="text-xs font-black text-red-500">突击</span></label>
@@ -225,14 +191,7 @@
                     <div class="bg-white/50 rounded-xl p-2 flex items-center gap-3 border border-white/30">
                         <span class="text-[10px] font-bold opacity-70">头像</span>
                         <div class="flex gap-2">
-                            <div 
-                                v-for="img in avatarList" 
-                                :key="img.file"
-                                @click="toggleAvatar(img.file)"
-                                class="avatar-btn"
-                                :class="{ active: modelValue.avatar === img.file }"
-                                :title="img.name"
-                            >
+                            <div v-for="img in avatarList" :key="img.file" @click="toggleAvatar(img.file)" class="avatar-btn" :class="{ active: modelValue.avatar === img.file }" :title="img.name">
                                 <img :src="img.file" :alt="img.name">
                             </div>
                         </div>
@@ -250,9 +209,13 @@
             props: ['index', 'modelValue'],
             emits: ['update:modelValue'],
             setup(props) {
+                // ✨ 修改：颜色顺序调整（粉-灰-橙-紫-红），去除了蓝色
                 const colors = [
-                    { name: '紫', val: 'bg-purple' }, { name: '粉', val: 'bg-pink' }, { name: '橙', val: 'bg-orange' }, 
-                    { name: '蓝', val: 'bg-blue' }, { name: '红', val: 'bg-red' }, { name: '灰', val: 'bg-gray' } 
+                    { name: '粉', val: 'bg-pink' },
+                    { name: '灰', val: 'bg-gray' },
+                    { name: '橙', val: 'bg-orange' },
+                    { name: '紫', val: 'bg-purple' },
+                    { name: '红', val: 'bg-red' }
                 ];
                 
                 const avatarList = [
@@ -279,8 +242,20 @@
                     props.modelValue.avatar = props.modelValue.avatar === file ? '' : file;
                 };
 
+                // ✨ 新增：选择颜色时自动切换头像
+                const selectColor = (val) => {
+                    props.modelValue.color = val;
+                    switch(val) {
+                        case 'bg-pink': props.modelValue.avatar = 'ran.png'; break;
+                        case 'bg-gray': props.modelValue.avatar = 'lin.png'; break;
+                        case 'bg-orange': props.modelValue.avatar = 'la.png'; break;
+                        case 'bg-purple': props.modelValue.avatar = 'nuo.png'; break;
+                        case 'bg-red': props.modelValue.avatar = 'yi.png'; break;
+                    }
+                };
+
                 watch(() => props.modelValue.tag, (newTag) => { if (props.modelValue.type === 'card') props.modelValue.isProgram = (newTag === '节目'); });
-                return { colors, avatarList, toggleAvatar, titleOptions, showTitleDropdown, selectTitle, hideDropdown };
+                return { colors, avatarList, toggleAvatar, titleOptions, showTitleDropdown, selectTitle, hideDropdown, selectColor };
             }
         };
 
@@ -343,7 +318,8 @@
                 const addEvent = (dayIndex) => {
                     days.value[dayIndex].events.push({ 
                         type: 'card', tag: '日常', time: '20:00', title: '', desc: '', 
-                        color: 'bg-purple', is2D: false, isRaid: false, isProgram: false,
+                        color: '', // ✨ 修改：默认颜色为空
+                        is2D: false, isRaid: false, isProgram: false,
                         avatar: ''
                     });
                 };
