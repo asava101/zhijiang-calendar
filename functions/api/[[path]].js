@@ -1,10 +1,10 @@
 // functions/api/[[path]].js
 
-const ADMIN_PASSWORD = "z-{%DVp|QN"; 
+const ADMIN_PASSWORD = "z-{ddN"; 
 
 // 1. UUID 生成
 function generateUUID() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.替换(/[xy]/g, function(c) {
     var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
     return v.toString(16);
   });
@@ -116,3 +116,4 @@ export async function onRequest(context) {
     return jsonResponse({ error: "Runtime Error", details: err.message }, 500);
   }
 }
+
